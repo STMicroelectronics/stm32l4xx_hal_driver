@@ -26,6 +26,10 @@ Copyright (c) 2017 STMicroelectronics.
 This software component is licensed by STMicroelectronics under BSD 3-Clause license. You may not use this file except in compliance with the License. 
 You may obtain a copy of the License [here](https://opensource.org/licenses/BSD-3-Clause).
 
+## Release note
+
+Details about the content of this release are available in the release note [here](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/stm32l4xx_hal_driver/blob/master/Release_Notes.html).
+
 ## Compatibility information
 
 In this table, you can find the successive versions of this HAL-LL Driver component, in line with the corresponding versions of the full MCU package:
@@ -37,6 +41,7 @@ HAL Driver L4 | CMSIS Device L4 | CMSIS Core | Was delivered in the full MCU pac
 Tag v1.10.0 | Tag v1.5.1 | Tag v5.4.0_cm4 | Tag v1.14.0 (and following, if any, till next new tag)
 Tag v1.11.0 | Tag v1.6.0 | Tag v5.4.0_cm4 | Tag v1.15.0 (and following, if any, till next new tag)
 Tag v1.11.1 | Tag v1.6.1 | Tag v5.4.0_cm4 | Tag v1.15.1 (and following, if any, till next new tag)
+Tag v1.12.0 | Tag v1.7.0 | Tag v5.6.0_cm4 | Tag v1.16.0 (and following, if any, till next new tag)
 
 Details about the content of this release are available in the release note [here](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/stm32l4xx_hal_driver/blob/master/Release_Notes.html). 
 
