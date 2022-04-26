@@ -1012,29 +1012,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
         /* Disable the main PLL. */
         __HAL_RCC_PLL_DISABLE();
 
-        /* Disable all PLL outputs to save power if no PLLs on */
-#if defined(RCC_PLLSAI1_SUPPORT) && defined(RCC_CR_PLLSAI2RDY)
-        if(READ_BIT(RCC->CR, (RCC_CR_PLLSAI1RDY | RCC_CR_PLLSAI2RDY)) == 0U)
-        {
-          MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC, RCC_PLLSOURCE_NONE);
-        }
-#elif defined(RCC_PLLSAI1_SUPPORT)
-        if(READ_BIT(RCC->CR, RCC_CR_PLLSAI1RDY) == 0U)
-        {
-          MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC, RCC_PLLSOURCE_NONE);
-        }
-#else
-        MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC, RCC_PLLSOURCE_NONE);
-#endif /* RCC_PLLSAI1_SUPPORT && RCC_CR_PLLSAI2RDY */
-
-#if defined(RCC_PLLSAI2_SUPPORT)
-        __HAL_RCC_PLLCLKOUT_DISABLE(RCC_PLL_SYSCLK | RCC_PLL_48M1CLK | RCC_PLL_SAI3CLK);
-#elif defined(RCC_PLLSAI1_SUPPORT)
-        __HAL_RCC_PLLCLKOUT_DISABLE(RCC_PLL_SYSCLK | RCC_PLL_48M1CLK | RCC_PLL_SAI2CLK);
-#else
-        __HAL_RCC_PLLCLKOUT_DISABLE(RCC_PLL_SYSCLK | RCC_PLL_48M1CLK);
-#endif /* RCC_PLLSAI2_SUPPORT */
-
         /* Get Start Tick*/
         tickstart = HAL_GetTick();
 
@@ -1046,6 +1023,14 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
             return HAL_TIMEOUT;
           }
         }
+        /* Unselect main PLL clock source and disable main PLL outputs to save power */
+#if defined(RCC_PLLSAI2_SUPPORT)
+        RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLSRC | RCC_PLL_SYSCLK | RCC_PLL_48M1CLK | RCC_PLL_SAI3CLK);
+#elif defined(RCC_PLLSAI1_SUPPORT)
+        RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLSRC | RCC_PLL_SYSCLK | RCC_PLL_48M1CLK | RCC_PLL_SAI2CLK);
+#else
+        RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLSRC | RCC_PLL_SYSCLK | RCC_PLL_48M1CLK);
+#endif /* RCC_PLLSAI2_SUPPORT */
       }
       else
       {

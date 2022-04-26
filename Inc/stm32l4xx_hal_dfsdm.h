@@ -63,7 +63,7 @@ typedef struct
 {
   FunctionalState Activation; /*!< Output clock enable/disable */
   uint32_t        Selection;  /*!< Output clock is system clock or audio clock.
-                                   This parameter can be a value of @ref DFSDM_Channel_OutputClock */
+                                   This parameter can be a value of @ref DFSDM_Channel_OuputClock */
   uint32_t        Divider;    /*!< Output clock divider.
                                    This parameter must be a number between Min_Data = 2 and Max_Data = 256 */
 } DFSDM_Channel_OutputClockTypeDef;
@@ -307,7 +307,7 @@ typedef void (*pDFSDM_Filter_AwdCallbackTypeDef)(DFSDM_Filter_HandleTypeDef *hdf
   * @{
   */
 
-/** @defgroup DFSDM_Channel_OutputClock DFSDM channel output clock selection
+/** @defgroup DFSDM_Channel_OuputClock DFSDM channel output clock selection
   * @{
   */
 #define DFSDM_CHANNEL_OUTPUT_CLOCK_SYSTEM    0x00000000U             /*!< Source for output clock is system clock */
