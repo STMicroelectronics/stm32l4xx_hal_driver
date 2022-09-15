@@ -4379,6 +4379,16 @@ static void UART_RxISR_8BIT(UART_HandleTypeDef *huart)
       /* Initialize type of RxEvent to Transfer Complete */
       huart->RxEventType = HAL_UART_RXEVENT_TC;
 
+      if (!(IS_LPUART_INSTANCE(huart->Instance)))
+      {
+        /* Check that USART RTOEN bit is set */
+        if (READ_BIT(huart->Instance->CR2, USART_CR2_RTOEN) != 0U)
+        {
+          /* Enable the UART Receiver Timeout Interrupt */
+          ATOMIC_CLEAR_BIT(huart->Instance->CR1, USART_CR1_RTOIE);
+        }
+      }
+
       /* Check current reception Mode :
          If Reception till IDLE event has been selected : */
       if (huart->ReceptionType == HAL_UART_RECEPTION_TOIDLE)
@@ -4465,6 +4475,16 @@ static void UART_RxISR_16BIT(UART_HandleTypeDef *huart)
 
       /* Initialize type of RxEvent to Transfer Complete */
       huart->RxEventType = HAL_UART_RXEVENT_TC;
+
+      if (!(IS_LPUART_INSTANCE(huart->Instance)))
+      {
+        /* Check that USART RTOEN bit is set */
+        if (READ_BIT(huart->Instance->CR2, USART_CR2_RTOEN) != 0U)
+        {
+          /* Enable the UART Receiver Timeout Interrupt */
+          ATOMIC_CLEAR_BIT(huart->Instance->CR1, USART_CR1_RTOIE);
+        }
+      }
 
       /* Check current reception Mode :
          If Reception till IDLE event has been selected : */
@@ -4600,6 +4620,16 @@ static void UART_RxISR_8BIT_FIFOEN(UART_HandleTypeDef *huart)
 
         /* Initialize type of RxEvent to Transfer Complete */
         huart->RxEventType = HAL_UART_RXEVENT_TC;
+
+        if (!(IS_LPUART_INSTANCE(huart->Instance)))
+        {
+          /* Check that USART RTOEN bit is set */
+          if (READ_BIT(huart->Instance->CR2, USART_CR2_RTOEN) != 0U)
+          {
+            /* Enable the UART Receiver Timeout Interrupt */
+            ATOMIC_CLEAR_BIT(huart->Instance->CR1, USART_CR1_RTOIE);
+          }
+        }
 
         /* Check current reception Mode :
            If Reception till IDLE event has been selected : */
@@ -4754,6 +4784,16 @@ static void UART_RxISR_16BIT_FIFOEN(UART_HandleTypeDef *huart)
 
         /* Initialize type of RxEvent to Transfer Complete */
         huart->RxEventType = HAL_UART_RXEVENT_TC;
+
+        if (!(IS_LPUART_INSTANCE(huart->Instance)))
+        {
+          /* Check that USART RTOEN bit is set */
+          if (READ_BIT(huart->Instance->CR2, USART_CR2_RTOEN) != 0U)
+          {
+            /* Enable the UART Receiver Timeout Interrupt */
+            ATOMIC_CLEAR_BIT(huart->Instance->CR1, USART_CR1_RTOIE);
+          }
+        }
 
         /* Check current reception Mode :
            If Reception till IDLE event has been selected : */
