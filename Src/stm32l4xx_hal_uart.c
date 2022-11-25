@@ -717,6 +717,9 @@ __weak void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
 /**
   * @brief  Register a User UART Callback
   *         To be used instead of the weak predefined callback
+  * @note   The HAL_UART_RegisterCallback() may be called before HAL_UART_Init(), HAL_HalfDuplex_Init(),
+  *         HAL_LIN_Init(), HAL_MultiProcessor_Init() or HAL_RS485Ex_Init() in HAL_UART_STATE_RESET to register
+  *         callbacks for HAL_UART_MSPINIT_CB_ID and HAL_UART_MSPDEINIT_CB_ID
   * @param  huart uart handle
   * @param  CallbackID ID of the callback to be registered
   *         This parameter can be one of the following values:
@@ -749,8 +752,6 @@ HAL_StatusTypeDef HAL_UART_RegisterCallback(UART_HandleTypeDef *huart, HAL_UART_
 
     return HAL_ERROR;
   }
-
-  __HAL_LOCK(huart);
 
   if (huart->gState == HAL_UART_STATE_READY)
   {
@@ -843,14 +844,15 @@ HAL_StatusTypeDef HAL_UART_RegisterCallback(UART_HandleTypeDef *huart, HAL_UART_
     status =  HAL_ERROR;
   }
 
-  __HAL_UNLOCK(huart);
-
   return status;
 }
 
 /**
   * @brief  Unregister an UART Callback
   *         UART callaback is redirected to the weak predefined callback
+  * @note   The HAL_UART_UnRegisterCallback() may be called before HAL_UART_Init(), HAL_HalfDuplex_Init(),
+  *         HAL_LIN_Init(), HAL_MultiProcessor_Init() or HAL_RS485Ex_Init() in HAL_UART_STATE_RESET to un-register
+  *         callbacks for HAL_UART_MSPINIT_CB_ID and HAL_UART_MSPDEINIT_CB_ID
   * @param  huart uart handle
   * @param  CallbackID ID of the callback to be unregistered
   *         This parameter can be one of the following values:
@@ -874,8 +876,6 @@ HAL_StatusTypeDef HAL_UART_RegisterCallback(UART_HandleTypeDef *huart, HAL_UART_
 HAL_StatusTypeDef HAL_UART_UnRegisterCallback(UART_HandleTypeDef *huart, HAL_UART_CallbackIDTypeDef CallbackID)
 {
   HAL_StatusTypeDef status = HAL_OK;
-
-  __HAL_LOCK(huart);
 
   if (HAL_UART_STATE_READY == huart->gState)
   {
@@ -969,8 +969,6 @@ HAL_StatusTypeDef HAL_UART_UnRegisterCallback(UART_HandleTypeDef *huart, HAL_UAR
 
     status =  HAL_ERROR;
   }
-
-  __HAL_UNLOCK(huart);
 
   return status;
 }
