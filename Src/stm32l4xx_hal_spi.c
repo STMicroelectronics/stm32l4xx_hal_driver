@@ -1550,6 +1550,14 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, uint8_t *pTxD
     hspi->ErrorCode = HAL_SPI_ERROR_FLAG;
   }
 
+  if (hspi->ErrorCode != HAL_SPI_ERROR_NONE)
+  {
+    errorcode = HAL_ERROR;
+  }
+  else
+  {
+    hspi->State = HAL_SPI_STATE_READY;
+  }
 
 error :
   __HAL_UNLOCK(hspi);
