@@ -2423,7 +2423,10 @@ typedef struct
 
 HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
 void              HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
+/* This function is super heavy and had been rewritten for some other HALs. The following
+     definitions are here for compatibility */
 uint32_t          HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk);
+#define   HAL_Custom_GetCanPeriphCLKFreq()   HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_FDCAN)
 
 /**
   * @}
