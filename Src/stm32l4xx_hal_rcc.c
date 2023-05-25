@@ -398,6 +398,8 @@ HAL_StatusTypeDef HAL_RCC_DeInit(void)
   * @note   Transition HSE Bypass to HSE On and HSE On to HSE Bypass are not
   *         supported by this macro. User should request a transition to HSE Off
   *         first and then HSE On or HSE Bypass.
+  * @note   If HSE failed to start, HSE should be disabled before recalling
+            HAL_RCC_OscConfig().
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)

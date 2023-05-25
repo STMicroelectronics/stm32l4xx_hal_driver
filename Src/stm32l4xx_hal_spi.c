@@ -1558,7 +1558,7 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, uint8_t *pTxD
   {
     hspi->State = HAL_SPI_STATE_READY;
   }
-
+  
 error :
   __HAL_UNLOCK(hspi);
   return errorcode;
