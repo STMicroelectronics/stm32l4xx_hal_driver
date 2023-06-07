@@ -2421,8 +2421,16 @@ typedef struct
   * @{
   */
 
+
+/* This function is super heavy and had been split to spare some code. Use the alternative ones, in this order */
 HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_RTC(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C1(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_ADC(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
+/* Only needed ones have been done so far. Feel free to continue the work according to your needs */
+
 void              HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
+
 /* This function is super heavy and had been rewritten for some other HALs. The following
      definitions are here for compatibility */
 uint32_t          HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk);

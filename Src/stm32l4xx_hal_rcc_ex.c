@@ -84,6 +84,110 @@ static uint32_t RCCEx_GetSAIxPeriphCLKFreq(uint32_t PeriphClk, uint32_t InputFre
 
 /* Exported functions --------------------------------------------------------*/
 
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_RTC(RCC_PeriphCLKInitTypeDef *PeriphClkInit) {
+	HAL_StatusTypeDef ret = HAL_OK;
+	FlagStatus pwrclkchanged = RESET;
+	uint32_t tmpregister;
+
+	/* Check for RTC Parameters used to output RTCCLK */
+	assert_param(IS_RCC_RTCCLKSOURCE(PeriphClkInit->RTCClockSelection));
+
+	/* Enable Power Clock */
+	if (__HAL_RCC_PWR_IS_CLK_DISABLED()) {
+		__HAL_RCC_PWR_CLK_ENABLE();
+		pwrclkchanged = SET;
+	}
+
+	/* Enable write access to Backup domain */
+	SET_BIT(PWR->CR1, PWR_CR1_DBP);
+
+	/* Wait for Backup domain Write protection disable */
+	uint32_t tickstart = HAL_GetTick();
+
+	while (HAL_IS_BIT_CLR(PWR->CR1, PWR_CR1_DBP)) {
+		if ((HAL_GetTick() - tickstart) > RCC_DBP_TIMEOUT_VALUE) {
+			ret = HAL_TIMEOUT;
+			goto exit;
+		}
+	}
+
+	/* Reset the Backup domain only if the RTC Clock source selection is modified from default */
+	tmpregister = READ_BIT(RCC->BDCR, RCC_BDCR_RTCSEL);
+
+	if ((tmpregister != RCC_RTCCLKSOURCE_NONE) && (tmpregister != PeriphClkInit->RTCClockSelection)) {
+		/* Store the content of BDCR register before the reset of Backup Domain */
+		tmpregister = READ_BIT(RCC->BDCR, ~(RCC_BDCR_RTCSEL));
+		/* RTC Clock selection can be changed only if the Backup Domain is reset */
+		__HAL_RCC_BACKUPRESET_FORCE();
+		__HAL_RCC_BACKUPRESET_RELEASE();
+		/* Restore the Content of BDCR register */
+		RCC->BDCR = tmpregister;
+	}
+
+	/* Wait for LSE reactivation if LSE was enable prior to Backup Domain reset */
+	if (HAL_IS_BIT_SET(tmpregister, RCC_BDCR_LSEON)) {
+		/* Get Start Tick*/
+		tickstart = HAL_GetTick();
+
+		/* Wait till LSE is ready */
+		while (HAL_IS_BIT_CLR(RCC->BDCR, RCC_BDCR_LSERDY)) {
+			if ((HAL_GetTick() - tickstart) > RCC_LSE_TIMEOUT_VALUE) {
+				ret = HAL_TIMEOUT;
+				goto exit;
+			}
+		}
+	}
+
+	/* Apply new RTC clock source selection */
+	__HAL_RCC_RTC_CONFIG(PeriphClkInit->RTCClockSelection);
+
+exit:
+	/* Restore clock configuration if changed */
+	if (pwrclkchanged == SET) {
+		__HAL_RCC_PWR_CLK_DISABLE();
+	}
+
+	return ret;
+}
+
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C1(RCC_PeriphCLKInitTypeDef *PeriphClkInit) {
+	/* Check the parameters */
+	assert_param(IS_RCC_I2C1CLKSOURCE(PeriphClkInit->I2c1ClockSelection));
+
+	/* Configure the I2C1 clock source */
+	__HAL_RCC_I2C1_CONFIG(PeriphClkInit->I2c1ClockSelection);
+
+	return HAL_OK;
+}
+
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_ADC(RCC_PeriphCLKInitTypeDef *PeriphClkInit) {
+	HAL_StatusTypeDef ret = HAL_OK;
+
+	/* Check the parameters */
+	assert_param(IS_RCC_ADCCLKSOURCE(PeriphClkInit->AdcClockSelection));
+
+	/* Configure the ADC interface clock source */
+	__HAL_RCC_ADC_CONFIG(PeriphClkInit->AdcClockSelection);
+
+#if defined(RCC_PLLSAI1_SUPPORT)
+	if (PeriphClkInit->AdcClockSelection == RCC_ADCCLKSOURCE_PLLSAI1) {
+		/* PLLSAI1 input clock, parameters M, N & R configuration and clock output (PLLSAI1ClockOut) */
+		ret = RCCEx_PLLSAI1_Config(&(PeriphClkInit->PLLSAI1), DIVIDER_R_UPDATE);
+		if (ret != HAL_OK) {
+			return ret;
+		}
+	}
+#endif /* RCC_PLLSAI1_SUPPORT */
+#if defined(STM32L471xx) || defined(STM32L475xx) || defined(STM32L476xx) || defined(STM32L485xx) || defined(STM32L486xx) || defined(STM32L496xx) || defined(STM32L4A6xx)
+	else if (PeriphClkInit->AdcClockSelection == RCC_ADCCLKSOURCE_PLLSAI2) {
+		/* PLLSAI2 input clock, parameters M, N & R configuration and clock output (PLLSAI2ClockOut) */
+		ret = RCCEx_PLLSAI2_Config(&(PeriphClkInit->PLLSAI2), DIVIDER_R_UPDATE);
+	}
+#endif /* STM32L471xx || STM32L475xx || STM32L476xx || STM32L485xx || STM32L486xx || STM32L496xx || STM32L4A6xx */
+
+	return ret;
+}
+
 /** @defgroup RCCEx_Exported_Functions RCCEx Exported Functions
   * @{
   */
