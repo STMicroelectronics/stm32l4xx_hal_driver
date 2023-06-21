@@ -1116,6 +1116,10 @@ HAL_StatusTypeDef HAL_CAN_RequestSleep(CAN_HandleTypeDef *hcan)
   if ((state == HAL_CAN_STATE_READY) ||
       (state == HAL_CAN_STATE_LISTENING))
   {
+    /* Clear any remaining untreated wake up or sleep event. It is more than likely to have one
+        as the CAN is in sleep mode after a POR */
+    SET_BIT(hcan->Instance->MSR, CAN_MSR_WKUI | CAN_MSR_SLAKI);
+
     /* Request Sleep mode */
     SET_BIT(hcan->Instance->MCR, CAN_MCR_SLEEP);
 
