@@ -1320,7 +1320,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
   *            @arg @ref RCC_MCO1SOURCE_SYSCLK  system  clock selected as MCO source
   *            @arg @ref RCC_MCO1SOURCE_MSI  MSI clock selected as MCO source
   *            @arg @ref RCC_MCO1SOURCE_HSI  HSI clock selected as MCO source
-  *            @arg @ref RCC_MCO1SOURCE_HSE  HSE clock selected as MCO sourcee
+  *            @arg @ref RCC_MCO1SOURCE_HSE  HSE clock selected as MCO source
   *            @arg @ref RCC_MCO1SOURCE_PLLCLK  main PLL clock selected as MCO source
   *            @arg @ref RCC_MCO1SOURCE_LSI  LSI clock selected as MCO source
   *            @arg @ref RCC_MCO1SOURCE_LSE  LSE clock selected as MCO source

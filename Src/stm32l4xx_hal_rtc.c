@@ -2504,11 +2504,15 @@ HAL_StatusTypeDef HAL_RTC_WaitForSynchro(RTC_HandleTypeDef *hrtc)
 {
   uint32_t tickstart;
 
-  /* Clear RSF flag */
-#if defined(STM32L412xx) || defined(STM32L422xx) || defined (STM32L4P5xx) || defined (STM32L4Q5xx)
+#if defined(STM32L412xx) || defined(STM32L422xx)
+  /* Clear RSF flag, keep reserved bits at reset values (setting other flags has no effect) */
+  hrtc->Instance->ICSR = ((uint32_t)(RTC_RSF_MASK & RTC_ICSR_RESERVED_MASK));
+#elif defined (STM32L4P5xx) || defined (STM32L4Q5xx)
+  /* Clear RSF flag (use a read-modify-write sequence to preserve the other read-write bits) */
   hrtc->Instance->ICSR &= (uint32_t)RTC_RSF_MASK;
 #else
-  hrtc->Instance->ISR &= (uint32_t)RTC_RSF_MASK;
+  /* Clear RSF flag, keep reserved bits at reset values (setting other flags has no effect) */
+  hrtc->Instance->ISR = ((uint32_t)(RTC_RSF_MASK & RTC_ISR_RESERVED_MASK));
 #endif
 
   tickstart = HAL_GetTick();

@@ -993,9 +993,15 @@ HAL_RTCStateTypeDef HAL_RTC_GetState(RTC_HandleTypeDef *hrtc);
                                             RTC_DR_DU)
 
 #define RTC_INIT_MASK                       0xFFFFFFFFu
-#if defined(STM32L412xx) || defined(STM32L422xx) || defined (STM32L4P5xx) || defined (STM32L4Q5xx)
+
+#if defined(STM32L412xx) || defined(STM32L422xx)
+#define RTC_ICSR_RESERVED_MASK              0x000100FCu
+#define RTC_RSF_MASK                        (~(RTC_ICSR_INIT | RTC_ICSR_RSF))
+#elif defined (STM32L4P5xx) || defined (STM32L4Q5xx)
+#define RTC_ICSR_RESERVED_MASK              0x00011FFCu
 #define RTC_RSF_MASK                        (~(RTC_ICSR_INIT | RTC_ICSR_RSF))
 #else
+#define RTC_ISR_RESERVED_MASK               0x0003FFFFu
 #define RTC_RSF_MASK                        (~(RTC_ISR_INIT | RTC_ISR_RSF))
 #endif
 

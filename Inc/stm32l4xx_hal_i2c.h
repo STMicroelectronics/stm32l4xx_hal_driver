@@ -207,6 +207,7 @@ typedef struct __I2C_HandleTypeDef
 
   DMA_HandleTypeDef          *hdmarx;        /*!< I2C Rx DMA handle parameters              */
 
+
   HAL_LockTypeDef            Lock;           /*!< I2C locking object                        */
 
   __IO HAL_I2C_StateTypeDef  State;          /*!< I2C communication state                   */
@@ -804,8 +805,8 @@ uint32_t             HAL_I2C_GetError(const I2C_HandleTypeDef *hi2c);
                                                                  (I2C_CR2_START) | (I2C_CR2_AUTOEND)) & \
                                                                 (~I2C_CR2_RD_WRN)) : \
                                                      (uint32_t)((((uint32_t)(__ADDRESS__) & (I2C_CR2_SADD)) | \
-                                                                 (I2C_CR2_ADD10) | (I2C_CR2_START)) & \
-                                                                (~I2C_CR2_RD_WRN)))
+                                                                 (I2C_CR2_ADD10) | (I2C_CR2_START) | \
+                                                                 (I2C_CR2_AUTOEND)) & (~I2C_CR2_RD_WRN)))
 
 #define I2C_CHECK_FLAG(__ISR__, __FLAG__)         ((((__ISR__) & ((__FLAG__) & I2C_FLAG_MASK)) == \
                                                     ((__FLAG__) & I2C_FLAG_MASK)) ? SET : RESET)
