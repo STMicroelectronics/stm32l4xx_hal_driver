@@ -164,7 +164,7 @@ typedef enum
 /**
   * @brief  Check whether the specified EXTI line flag is set or not.
   * @param  __EXTI_LINE__ specifies the EXTI line flag to check.
-  *         This parameter can be GPIO_PIN_x where x can be(0..15)
+  *         This parameter can be GPIO_PIN_x where x can be (0..15)
   * @retval The new state of __EXTI_LINE__ (SET or RESET).
   */
 #define __HAL_GPIO_EXTI_GET_FLAG(__EXTI_LINE__)       (EXTI->PR1 & (__EXTI_LINE__))
@@ -180,7 +180,7 @@ typedef enum
 /**
   * @brief  Check whether the specified EXTI line is asserted or not.
   * @param  __EXTI_LINE__ specifies the EXTI line to check.
-  *          This parameter can be GPIO_PIN_x where x can be(0..15)
+  *          This parameter can be GPIO_PIN_x where x can be (0..15)
   * @retval The new state of __EXTI_LINE__ (SET or RESET).
   */
 #define __HAL_GPIO_EXTI_GET_IT(__EXTI_LINE__)         (EXTI->PR1 & (__EXTI_LINE__))
@@ -196,7 +196,7 @@ typedef enum
 /**
   * @brief  Generate a Software interrupt on selected EXTI line.
   * @param  __EXTI_LINE__ specifies the EXTI line to check.
-  *          This parameter can be GPIO_PIN_x where x can be(0..15)
+  *          This parameter can be GPIO_PIN_x where x can be (0..15)
   * @retval None
   */
 #define __HAL_GPIO_EXTI_GENERATE_SWIT(__EXTI_LINE__)  (EXTI->SWIER1 |= (__EXTI_LINE__))
