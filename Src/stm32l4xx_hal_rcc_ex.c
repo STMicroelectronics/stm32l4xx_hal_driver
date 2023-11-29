@@ -160,6 +160,16 @@ HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C1(RCC_PeriphCLKInitTypeDef
 	return HAL_OK;
 }
 
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C2(RCC_PeriphCLKInitTypeDef *PeriphClkInit) {
+	/* Check the parameters */
+	assert_param(IS_RCC_I2C2CLKSOURCE(PeriphClkInit->I2c2ClockSelection));
+
+	/* Configure the I2C2 clock source */
+	__HAL_RCC_I2C2_CONFIG(PeriphClkInit->I2c2ClockSelection);
+
+	return HAL_OK;
+}
+
 HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_ADC(RCC_PeriphCLKInitTypeDef *PeriphClkInit) {
 	HAL_StatusTypeDef ret = HAL_OK;
 

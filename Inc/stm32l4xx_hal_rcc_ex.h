@@ -2426,6 +2426,7 @@ typedef struct
 HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
 HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_RTC(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
 HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C1(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
+HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_I2C2(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
 HAL_StatusTypeDef HAL_Custom_RCCEx_PeriphCLKConfig_ADC(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
 /* Only needed ones have been done so far. Feel free to continue the work according to your needs */
 
