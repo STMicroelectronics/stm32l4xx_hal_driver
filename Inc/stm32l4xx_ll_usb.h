@@ -38,6 +38,10 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 
+#ifndef HAL_USB_CURRENT_MODE_MAX_DELAY_MS
+#define HAL_USB_CURRENT_MODE_MAX_DELAY_MS                           200U
+#endif /* define HAL_USB_CURRENT_MODE_MAX_DELAY_MS */
+
 /**
   * @brief  USB Mode definition
   */
