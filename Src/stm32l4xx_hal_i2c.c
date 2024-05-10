@@ -7000,6 +7000,12 @@ static HAL_StatusTypeDef I2C_WaitOnFlagUntilTimeout(I2C_HandleTypeDef *hi2c, uin
 {
   while (__HAL_I2C_GET_FLAG(hi2c, Flag) == Status)
   {
+    /* Check if an error is detected */
+    if (I2C_IsErrorOccurred(hi2c, Timeout, Tickstart) != HAL_OK)
+    {
+      return HAL_ERROR;
+    }
+
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
     {
