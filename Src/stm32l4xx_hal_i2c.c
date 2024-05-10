@@ -3341,22 +3341,6 @@ HAL_StatusTypeDef HAL_I2C_IsDeviceReady(I2C_HandleTypeDef *hi2c, uint16_t DevAdd
         __HAL_I2C_CLEAR_FLAG(hi2c, I2C_FLAG_STOPF);
       }
 
-      /* Check if the maximum allowed number of trials has been reached */
-      if (I2C_Trials == Trials)
-      {
-        /* Generate Stop */
-        hi2c->Instance->CR2 |= I2C_CR2_STOP;
-
-        /* Wait until STOPF flag is reset */
-        if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_STOPF, RESET, Timeout, tickstart) != HAL_OK)
-        {
-          return HAL_ERROR;
-        }
-
-        /* Clear STOP Flag */
-        __HAL_I2C_CLEAR_FLAG(hi2c, I2C_FLAG_STOPF);
-      }
-
       /* Increment Trials */
       I2C_Trials++;
     } while (I2C_Trials < Trials);
