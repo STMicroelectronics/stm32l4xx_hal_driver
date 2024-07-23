@@ -171,14 +171,14 @@
        A DMA1 request can be generated when an external trigger (but not a software trigger)
        occurs if DMA1 requests are enabled using HAL_DAC_Start_DMA().
        DMA requests are mapped as following:
-       (#) When DMAMUX is NOT present: 
+       (#) When DMAMUX is NOT present:
            DMA1 requests are mapped as following:
              (+) DAC channel1 mapped on DMA1 request 6 / channel3
              (+) DAC channel2 mapped on DMA1 request 5 / channel4
            DMA2 requests are mapped as following:
              (+) DAC channel1 mapped on DMA2 request 3 / channel4
              (+) DAC channel2 mapped on DMA2 request 3 / channel5
-       (#) When DMAMUX is present: 
+       (#) When DMAMUX is present:
              (+) DAC channel1 mapped on DMA1/DMA2 request 6 (can be any DMA channel)
              (+) DAC channel2 mapped on DMA1/DMA2 request 7 (can be any DMA channel)
 
@@ -264,7 +264,7 @@
       and a pointer to the user callback function.
 
     Use function HAL_DAC_UnRegisterCallback() to reset a callback to the default
-      weak (surcharged) function. It allows to reset following callbacks:
+      weak (overridden) function. It allows to reset following callbacks:
       (+) ConvCpltCallbackCh1     : callback when a half transfer is completed on Ch1.
       (+) ConvHalfCpltCallbackCh1 : callback when a transfer is completed on Ch1.
       (+) ErrorCallbackCh1        : callback when an error occurs on Ch1.
@@ -279,9 +279,9 @@
       This function) takes as parameters the HAL peripheral handle and the Callback ID.
 
       By default, after the HAL_DAC_Init and if the state is HAL_DAC_STATE_RESET
-      all callbacks are reset to the corresponding legacy weak (surcharged) functions.
+      all callbacks are reset to the corresponding legacy weak (overridden) functions.
       Exception done for MspInit and MspDeInit callbacks that are respectively
-      reset to the legacy weak (surcharged) functions in the HAL_DAC_Init
+      reset to the legacy weak (overridden) functions in the HAL_DAC_Init
       and HAL_DAC_DeInit only when these callbacks are null (not registered beforehand).
       If not, MspInit or MspDeInit are not null, the HAL_DAC_Init and HAL_DAC_DeInit
       keep and use the user MspInit/MspDeInit callbacks (registered beforehand)
@@ -296,7 +296,7 @@
 
       When The compilation define USE_HAL_DAC_REGISTER_CALLBACKS is set to 0 or
       not defined, the callback registering feature is not available
-      and weak (surcharged) callbacks are used.
+      and weak (overridden) callbacks are used.
 
      *** DAC HAL driver macros list ***
      =============================================
@@ -396,7 +396,7 @@ HAL_StatusTypeDef HAL_DAC_Init(DAC_HandleTypeDef *hdac)
 #if defined (STM32L431xx) || defined (STM32L432xx) || defined (STM32L433xx) || defined (STM32L442xx) || defined (STM32L443xx) || \
     defined (STM32L471xx) || defined (STM32L475xx) || defined (STM32L476xx) || defined (STM32L485xx) || defined (STM32L486xx) || defined (STM32L496xx) || defined (STM32L4A6xx) || \
     defined (STM32L4P5xx) || defined (STM32L4Q5xx) || \
-    defined (STM32L4R5xx) || defined (STM32L4R7xx) || defined (STM32L4R9xx) || defined (STM32L4S5xx) || defined (STM32L4S7xx) || defined(STM32L4S9xx)   
+    defined (STM32L4R5xx) || defined (STM32L4R7xx) || defined (STM32L4R9xx) || defined (STM32L4S5xx) || defined (STM32L4S7xx) || defined(STM32L4S9xx)
     hdac->ConvCpltCallbackCh2           = HAL_DACEx_ConvCpltCallbackCh2;
     hdac->ConvHalfCpltCallbackCh2       = HAL_DACEx_ConvHalfCpltCallbackCh2;
     hdac->ErrorCallbackCh2              = HAL_DACEx_ErrorCallbackCh2;
@@ -405,7 +405,7 @@ HAL_StatusTypeDef HAL_DAC_Init(DAC_HandleTypeDef *hdac)
         /* STM32L471xx STM32L475xx STM32L476xx STM32L485xx STM32L486xx STM32L496xx STM32L4A6xx */
         /* STM32L4P5xx STM32L4Q5xx                                                             */
         /* STM32L4R5xx STM32L4R7xx STM32L4R9xx STM32L4S5xx STM32L4S7xx STM32L4S9xx             */
-    
+
     if (hdac->MspInitCallback == NULL)
     {
       hdac->MspInitCallback             = HAL_DAC_MspInit;
@@ -1445,7 +1445,7 @@ uint32_t HAL_DAC_GetError(DAC_HandleTypeDef *hdac)
 #if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
 /**
   * @brief  Register a User DAC Callback
-  *         To be used instead of the weak (surcharged) predefined callback
+  *         To be used instead of the weak (overridden) predefined callback
   * @param  hdac DAC handle
   * @param  CallbackID ID of the callback to be registered
   *         This parameter can be one of the following values:
@@ -1554,7 +1554,7 @@ HAL_StatusTypeDef HAL_DAC_RegisterCallback(DAC_HandleTypeDef *hdac, HAL_DAC_Call
 
 /**
   * @brief  Unregister a User DAC Callback
-  *         DAC Callback is redirected to the weak (surcharged) predefined callback
+  *         DAC Callback is redirected to the weak (overridden) predefined callback
   * @param  hdac DAC handle
   * @param  CallbackID ID of the callback to be unregistered
   *         This parameter can be one of the following values:

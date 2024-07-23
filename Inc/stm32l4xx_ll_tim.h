@@ -653,10 +653,10 @@ typedef struct
 /** @defgroup TIM_LL_EC_COUNTERMODE Counter Mode
   * @{
   */
-#define LL_TIM_COUNTERMODE_UP                  0x00000000U          /*!<Counter used as upcounter */
+#define LL_TIM_COUNTERMODE_UP                  0x00000000U          /*!< Counter used as upcounter */
 #define LL_TIM_COUNTERMODE_DOWN                TIM_CR1_DIR          /*!< Counter used as downcounter */
 #define LL_TIM_COUNTERMODE_CENTER_DOWN         TIM_CR1_CMS_0        /*!< The counter counts up and down alternatively. Output compare interrupt flags of output channels  are set only when the counter is counting down. */
-#define LL_TIM_COUNTERMODE_CENTER_UP           TIM_CR1_CMS_1        /*!<The counter counts up and down alternatively. Output compare interrupt flags of output channels  are set only when the counter is counting up */
+#define LL_TIM_COUNTERMODE_CENTER_UP           TIM_CR1_CMS_1        /*!< The counter counts up and down alternatively. Output compare interrupt flags of output channels  are set only when the counter is counting up */
 #define LL_TIM_COUNTERMODE_CENTER_UP_DOWN      TIM_CR1_CMS          /*!< The counter counts up and down alternatively. Output compare interrupt flags of output channels  are set only when the counter is counting up or down. */
 /**
   * @}
@@ -1920,6 +1920,17 @@ __STATIC_INLINE void LL_TIM_CC_EnablePreload(TIM_TypeDef *TIMx)
 __STATIC_INLINE void LL_TIM_CC_DisablePreload(TIM_TypeDef *TIMx)
 {
   CLEAR_BIT(TIMx->CR2, TIM_CR2_CCPC);
+}
+
+/**
+  * @brief  Indicates whether the capture/compare control bits (CCxE, CCxNE and OCxM) preload is enabled.
+  * @rmtoll CR2          CCPC          LL_TIM_CC_IsEnabledPreload
+  * @param  TIMx Timer instance
+  * @retval State of bit (1 or 0).
+  */
+__STATIC_INLINE uint32_t LL_TIM_CC_IsEnabledPreload(const TIM_TypeDef *TIMx)
+{
+  return ((READ_BIT(TIMx->CR2, TIM_CR2_CCPC) == (TIM_CR2_CCPC)) ? 1UL : 0UL);
 }
 
 /**

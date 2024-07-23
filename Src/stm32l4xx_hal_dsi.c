@@ -130,7 +130,7 @@
     all callbacks are set to the corresponding weak functions:
     examples HAL_DSI_TearingEffectCallback(), HAL_DSI_EndOfRefreshCallback().
     Exception done for MspInit and MspDeInit functions that are respectively
-    reset to the legacy weak (surcharged) functions in the HAL_DSI_Init()
+    reset to the legacy weak (overridden) functions in the HAL_DSI_Init()
     and HAL_DSI_DeInit() only when these callbacks are null (not registered beforehand).
     If not, MspInit or MspDeInit are not null, the HAL_DSI_Init() and HAL_DSI_DeInit()
     keep and use the user MspInit/MspDeInit callbacks (registered beforehand).
@@ -1663,14 +1663,14 @@ HAL_StatusTypeDef HAL_DSI_LongWrite(DSI_HandleTypeDef *hdsi,
                                     uint32_t Mode,
                                     uint32_t NbParams,
                                     uint32_t Param1,
-                                    uint8_t *ParametersTable)
+                                    const uint8_t *ParametersTable)
 {
   uint32_t uicounter;
   uint32_t nbBytes;
   uint32_t count;
   uint32_t tickstart;
   uint32_t fifoword;
-  uint8_t *pparams = ParametersTable;
+  const uint8_t *pparams = ParametersTable;
 
   /* Process locked */
   __HAL_LOCK(hdsi);
@@ -3134,7 +3134,7 @@ HAL_StatusTypeDef HAL_DSI_SetContentionDetectionOff(DSI_HandleTypeDef *hdsi, Fun
   *               the configuration information for the DSI.
   * @retval HAL state
   */
-HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi)
+HAL_DSI_StateTypeDef HAL_DSI_GetState(const DSI_HandleTypeDef *hdsi)
 {
   return hdsi->State;
 }
@@ -3145,7 +3145,7 @@ HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi)
   *               the configuration information for the DSI.
   * @retval DSI Error Code
   */
-uint32_t HAL_DSI_GetError(DSI_HandleTypeDef *hdsi)
+uint32_t HAL_DSI_GetError(const DSI_HandleTypeDef *hdsi)
 {
   /* Get the error code */
   return hdsi->ErrorCode;
