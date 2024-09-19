@@ -129,7 +129,7 @@
     and a pointer to the user callback function.
     [..]
     Use function HAL_SWPMI_UnRegisterCallback() to reset a callback to the default
-    weak (surcharged) function.
+    weak (overridden) function.
     HAL_SWPMI_UnRegisterCallback() takes as parameters the HAL peripheral handle,
     and the callback ID.
     This function allows to reset following callbacks:
@@ -142,10 +142,10 @@
       (+) MspDeInitCallback  : SWPMI MspDeInit.
     [..]
     By default, after the HAL_SWPMI_Init and if the state is HAL_SWPMI_STATE_RESET
-    all callbacks are reset to the corresponding legacy weak (surcharged) functions:
+    all callbacks are reset to the corresponding legacy weak functions:
     examples HAL_SWPMI_RxCpltCallback(), HAL_SWPMI_ErrorCallback().
     Exception done for MspInit and MspDeInit callbacks that are respectively
-    reset to the legacy weak (surcharged) functions in the HAL_SWPMI_Init
+    reset to the legacy weak functions in the HAL_SWPMI_Init
     and HAL_SWPMI_DeInit only when these callbacks are null (not registered beforehand).
     If not, MspInit or MspDeInit are not null, the HAL_SWPMI_Init and HAL_SWPMI_DeInit
     keep and use the user MspInit/MspDeInit callbacks (registered beforehand).
@@ -160,7 +160,7 @@
     [..]
     When the compilation define USE_HAL_SWPMI_REGISTER_CALLBACKS is set to 0 or
     not defined, the callback registering feature is not available
-    and weak (surcharged) callbacks are used.
+    and weak callbacks are used.
 
   @endverbatim
   */
@@ -401,7 +401,7 @@ __weak void HAL_SWPMI_MspDeInit(SWPMI_HandleTypeDef *hswpmi)
 #if (USE_HAL_SWPMI_REGISTER_CALLBACKS == 1)
 /**
   * @brief  Register a user SWPMI callback
-  *         to be used instead of the weak predefined callback.
+  *         To be used to override the weak predefined callback.
   * @param  hswpmi SWPMI handle.
   * @param  CallbackID ID of the callback to be registered.
   *         This parameter can be one of the following values:
@@ -494,7 +494,7 @@ HAL_StatusTypeDef HAL_SWPMI_RegisterCallback(SWPMI_HandleTypeDef        *hswpmi,
 
 /**
   * @brief  Unregister a user SWPMI callback.
-  *         SWPMI callback is redirected to the weak predefined callback.
+  *         Callback is redirected to the weak predefined callback.
   * @param  hswpmi SWPMI handle.
   * @param  CallbackID ID of the callback to be unregistered.
   *         This parameter can be one of the following values:
