@@ -7209,7 +7209,7 @@ static HAL_StatusTypeDef I2C_IsErrorOccurred(I2C_HandleTypeDef *hi2c, uint32_t T
   uint32_t error_code = 0;
   uint32_t tickstart = Tickstart;
   uint32_t tmp1;
-  HAL_I2C_ModeTypeDef tmp2;
+  HAL_I2C_ModeTypeDef tmp2 = hi2c->Mode;
 
   if (HAL_IS_BIT_SET(itflag, I2C_FLAG_AF))
   {
@@ -7226,7 +7226,6 @@ static HAL_StatusTypeDef I2C_IsErrorOccurred(I2C_HandleTypeDef *hi2c, uint32_t T
         if (((HAL_GetTick() - tickstart) > Timeout) || (Timeout == 0U))
         {
           tmp1 = (uint32_t)(hi2c->Instance->CR2 & I2C_CR2_STOP);
-          tmp2 = hi2c->Mode;
 
           /* In case of I2C still busy, try to regenerate a STOP manually */
           if ((__HAL_I2C_GET_FLAG(hi2c, I2C_FLAG_BUSY) != RESET) && \
@@ -7275,7 +7274,7 @@ static HAL_StatusTypeDef I2C_IsErrorOccurred(I2C_HandleTypeDef *hi2c, uint32_t T
   /* Check if a Bus error occurred */
   if (HAL_IS_BIT_SET(itflag, I2C_FLAG_BERR))
   {
-    error_code |= HAL_I2C_ERROR_BERR;
+    error_code |= tmp2 == HAL_I2C_MODE_MASTER ? RESET : HAL_I2C_ERROR_BERR;
 
     /* Clear BERR flag */
     __HAL_I2C_CLEAR_FLAG(hi2c, I2C_FLAG_BERR);
