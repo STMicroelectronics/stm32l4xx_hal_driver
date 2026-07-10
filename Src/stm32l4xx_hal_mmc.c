@@ -1343,6 +1343,10 @@ HAL_StatusTypeDef HAL_MMC_ReadBlocks_DMA(MMC_HandleTypeDef *hmmc, uint8_t *pData
     hmmc->Instance->IDMABASE0 = (uint32_t) pData ;
     hmmc->Instance->IDMACTRL  = SDMMC_ENABLE_IDMA_SINGLE_BUFF;
 #else
+    /* Disable the DMA Channel before forcing its direction: the DIR bit in
+       CCR is write-protected while the channel is enabled (EN = 1) */
+    __HAL_DMA_DISABLE(hmmc->hdmarx);
+
     /* Force DMA Direction */
     hmmc->hdmarx->Init.Direction = DMA_PERIPH_TO_MEMORY;
     MODIFY_REG(hmmc->hdmarx->Instance->CCR, DMA_CCR_DIR, hmmc->hdmarx->Init.Direction);
@@ -1515,6 +1519,10 @@ HAL_StatusTypeDef HAL_MMC_WriteBlocks_DMA(MMC_HandleTypeDef *hmmc, uint8_t *pDat
 #if !defined(STM32L4P5xx) && !defined(STM32L4Q5xx) && !defined(STM32L4R5xx) && !defined(STM32L4R7xx) && !defined(STM32L4R9xx) && !defined(STM32L4S5xx) && !defined(STM32L4S7xx) && !defined(STM32L4S9xx)
     /* Enable SDMMC DMA transfer */
     __HAL_MMC_DMA_ENABLE(hmmc);
+
+    /* Disable the DMA Channel before forcing its direction: the DIR bit in
+       CCR is write-protected while the channel is enabled (EN = 1) */
+    __HAL_DMA_DISABLE(hmmc->hdmatx);
 
     /* Force DMA Direction */
     hmmc->hdmatx->Init.Direction = DMA_MEMORY_TO_PERIPH;
