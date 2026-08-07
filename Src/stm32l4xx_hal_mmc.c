@@ -1346,7 +1346,6 @@ HAL_StatusTypeDef HAL_MMC_ReadBlocks_DMA(MMC_HandleTypeDef *hmmc, uint8_t *pData
     /* Force DMA Direction */
     hmmc->hdmarx->Init.Direction = DMA_PERIPH_TO_MEMORY;
     MODIFY_REG(hmmc->hdmarx->Instance->CCR, DMA_CCR_DIR, hmmc->hdmarx->Init.Direction);
-
     /* Enable the DMA Channel */
     if (HAL_DMA_Start_IT(hmmc->hdmarx, (uint32_t)&hmmc->Instance->FIFO, (uint32_t)pData,
                          (uint32_t)(MMC_BLOCKSIZE * NumberOfBlocks) / 4) != HAL_OK)
@@ -1515,10 +1514,6 @@ HAL_StatusTypeDef HAL_MMC_WriteBlocks_DMA(MMC_HandleTypeDef *hmmc, uint8_t *pDat
 #if !defined(STM32L4P5xx) && !defined(STM32L4Q5xx) && !defined(STM32L4R5xx) && !defined(STM32L4R7xx) && !defined(STM32L4R9xx) && !defined(STM32L4S5xx) && !defined(STM32L4S7xx) && !defined(STM32L4S9xx)
     /* Enable SDMMC DMA transfer */
     __HAL_MMC_DMA_ENABLE(hmmc);
-
-    /* Force DMA Direction */
-    hmmc->hdmatx->Init.Direction = DMA_MEMORY_TO_PERIPH;
-    MODIFY_REG(hmmc->hdmatx->Instance->CCR, DMA_CCR_DIR, hmmc->hdmatx->Init.Direction);
 
     /* Enable the DMA Channel */
     if (HAL_DMA_Start_IT(hmmc->hdmatx, (uint32_t)pData, (uint32_t)&hmmc->Instance->FIFO,
